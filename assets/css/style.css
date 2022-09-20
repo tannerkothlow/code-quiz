@@ -1,0 +1,50 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px;
+    margin-bottom: 30px;
+}
+
+#timer {
+    margin: 4px;
+}
+
+#high-scores {
+    margin: 4px;
+}
+
+header p {
+    display: inline-block;
+    font-size: 20px;
+}
+
+main {
+    display: flex; 
+    justify-content: center;  
+}
+
+/* #start {
+    display: none;
+} */
+
+#question-holder {
+    text-align: center;
+    width: 45%;
+    border: 2px solid black;
+    padding: 100px;
+}
+
+#question-header {
+    margin: 10px;
+}
+
+ol {
+    text-align: left;
+}
+
+ol li {
+    background-color: gray;
+    color: white;
+    padding: 2px;
+    margin: 4px;
+}
