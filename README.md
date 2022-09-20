@@ -1,2 +1,17 @@
-# code-quiz
-Week 4 Project: Create a dynamic browser based quiz that utilizes web API's.
+# Week 4: Dynamic Web Coding Quiz
+
+(complete screenshot)
+
+## Description
+
+
+
+## Installation
+
+
+
+## Usage
+
+
+
+## License
