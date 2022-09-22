@@ -48,3 +48,10 @@ ol li {
     padding: 2px;
     margin: 4px;
 }
+
+#answerBox {
+    color: darkgray;
+    /* border-top: 2px solid darkgray; */
+    padding: 3px;
+    text-align: left;
+}
