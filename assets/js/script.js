@@ -16,9 +16,14 @@ var testResult = document.querySelector("#answerBox")
 testResult.textContent = "";
 
 var highScores = [];
+var hsSotrage = JSON.parse(localStorage.getItem("high-scores"));
+highScores = highScores.concat(hsSotrage);
+console.log(highScores);
+
 
 var questionNum = 0;
-timer.textContent += "60";
+var stopTimer = false;
+var seconds = 59;
 
 var q1 = {
     header: "placeholder1 1",
@@ -128,6 +133,7 @@ goBackButton.addEventListener("click", function() {
 
 clearButton.addEventListener("click", function() {
     highScores = [];
+    localStorage.setItem("high-scores", JSON.stringify(highScores));
     while (questionList.firstChild) {
         questionList.removeChild(questionList.firstChild);
     };
@@ -135,10 +141,7 @@ clearButton.addEventListener("click", function() {
 
 initialSubmitBox.addEventListener("click", storeInitials);
 function storeInitials(event) {
-    event.preventDefault()
-
-    //placeholder
-    let score = 00;
+    event.preventDefault();
 
     console.log("The submit button works");
     let initials = document.getElementById("initials").value;
@@ -148,16 +151,15 @@ function storeInitials(event) {
 
     //Adds to the highscore array
     highScores.push(initials);
-    highScores.push(score);
-
-    console.log(initials);
-
+    highScores.push(seconds);
     initialsBox.setAttribute("style", "display: none");
+
     displayHighscores();
 };
 
 //Function that displays highscores
 var displayHighscores = function() {
+    localStorage.setItem("high-scores", JSON.stringify(highScores));
     questionList.setAttribute("style", "display: inline");
 
     questionHeader.textContent = "Highscores";
@@ -186,7 +188,6 @@ var displayHighscores = function() {
         x++;
         questionList.appendChild(score);
     }
-    //Dont forget to clear the timer too i guess
 };
 
 //Function that displays the start page
@@ -221,6 +222,7 @@ var startTest = function() {
     questionHeader.textContent = allQuestions[questionNum].header;
     questionHeader.setAttribute("style", "text-align: left");
     quizDesc.textContent = "";
+
     //Appends the child elements into the OL object
     option1.textContent = allQuestions[questionNum].b1;
     questionList.appendChild(option1);
@@ -241,15 +243,27 @@ var startTest = function() {
 
     clearButton.textContent = "";
 
-    //Increments the counter
+    //Starts a timer that runs and when its done it displays highscore with a unique message
+    var timerCounter = setInterval(function() {
+        timer.textContent = "Time: " + seconds;
+        if (stopTimer) {
+            clearInterval(timerCounter)
+        } else if (seconds <= 0) {
+            seconds = 0;
+            clearInterval(timerCounter);
+            hsEntry2();
+            questionHeader.textContent = "Time's Up!"
+        } else {
+        seconds--;
+        }
+    }, 1000);
+
 
 };
 
 //Fills the questions based on which question
 var nextQuesiton = function() {
     questionNum++;
-    console.log("Current value of qNum " + questionNum);
-    console.log("Value of allQ.length " + allQuestions.length);
     if (questionNum < allQuestions.length) {
 
         questionHeader.textContent = allQuestions[questionNum].header;
@@ -262,64 +276,67 @@ var nextQuesiton = function() {
 
         option4.textContent = allQuestions[questionNum].b4;
     } else {
-        console.log("Test End!")
-        hsEntry()
-    }
+        stopTimer = true;
+        let tick = 0;
+        var pause = setInterval(function() {
+            if (tick == 1) {
+                clearInterval(pause);
+                hsEntry2();
+            }
+        tick++;
+        }, 700);
+    };
 };
 
 function wrong() {
     testResult.setAttribute("style", "border-top: 2px solid darkgray")
     testResult.textContent = "Wrong!";
-    let timer = 1;
 
+    //This looks goofy but doesn't work if its just seconds - 5;
+    seconds = seconds - 5;
+
+    timer.setAttribute("style", "color: red")
+    let tick = 1;
     var clear = setInterval(function() {
-        if (timer == 0) {
+        if (tick == 0) {
             testResult.textContent = "";
             testResult.setAttribute("style", "border-top: 0px solid darkgray")
+            timer.setAttribute("style", "color: black")
             clearInterval(clear);
         }
-        timer--;
+        tick--;
     }, 700);
 };
 
 function right() {
     testResult.setAttribute("style", "border-top: 2px solid darkgray")
     testResult.textContent = "Correct!";
-    let timer = 1;
 
+    let tick = 1;
     var clear = setInterval(function() {
-        if (timer == 0) {
+        if (tick == 0) {
             testResult.textContent = "";
             testResult.setAttribute("style", "border-top: 0px solid darkgray")
             clearInterval(clear);
         }
-        timer--;
+        tick--;
     }, 700);
 };
 
-var hsEntry = function() {
-    //Wait for wrong or write to clear
-    let timer = 0;
-    var pause = setInterval(function() {
-        if (timer == 1) {
-            clearInterval(pause);
-            questionHeader.textContent = "All Done!"
+var hsEntry2 = function() {
+    questionHeader.textContent = "All Done!"
 
-            quizDesc.setAttribute("style", "display: inline-block");
-            quizDesc.textContent = "Your final score is "
+    quizDesc.setAttribute("style", "display: inline-block");
+     quizDesc.textContent = "Your final score is " + seconds;
         
-            //Wipes OL and removes all LI
-            while (questionList.firstChild) {
-                questionList.removeChild(questionList.firstChild);
-            };
+    //Wipes OL and removes all LI
+     while (questionList.firstChild) {
+        questionList.removeChild(questionList.firstChild);
+    };
 
-            initialsBox.setAttribute("style", "display: inline-block");
-        };
-        timer++;
-    }, 700);
+    initialsBox.setAttribute("style", "display: inline-block");
+}
 
-
-};
 
 
 
