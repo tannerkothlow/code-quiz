@@ -1,3 +1,7 @@
+body {
+    background-color: rgb(67, 84, 184);
+}
+
 header {
     display: flex;
     justify-content: space-between;
@@ -5,37 +9,30 @@ header {
     margin-bottom: 30px;
 }
 
-#timer {
-    margin: 4px;
-}
-
-#high-scores {
-    margin: 4px;
-}
-
 header p {
     display: inline-block;
     font-size: 20px;
-}
+    margin: 5px;
+    padding: 7px;
+    background-color: rgb(229, 229, 231);
+    border-radius: 10px;
+    color: rgb(67, 84, 184);
+    cursor: default;
+} 
 
 main {
     display: flex; 
     justify-content: center;  
 }
 
-/* #start {
-    display: none;
-} */
-
-#question-holder {
-    text-align: center;
-    width: 45%;
-    border: 2px solid black;
-    padding: 100px;
-}
-
-#question-header {
-    margin: 10px;
+button, #initialsSubmit {
+    color: rgb(229, 229, 231);
+    background-color: rgb(67, 84, 184);
+    border: 3px solid rgb(44, 50, 128);
+    font-size: 15px;
+    padding: 5px;
+    border-radius: 3px;
+    margin-top: 10px;
 }
 
 ol {
@@ -43,15 +40,54 @@ ol {
 }
 
 ol li {
-    background-color: gray;
+    background-color: rgb(56, 104, 206);
     color: white;
     padding: 2px;
     margin: 4px;
+    list-style-position: inside;
+    cursor: pointer;
+}
+
+ol li:hover {
+    background-color: rgb(64, 119, 221);
+}
+
+#high-scores {
+    cursor: pointer;
+}
+
+#question-holder {
+    text-align: center;
+    width: 45%;
+    padding: 100px;
+    background-color: rgb(229, 229, 231);
+    border-radius: 15px;
+    box-shadow: -5px 5px 2px rgb(44, 50, 128);
+}
+
+#question-header {
+    margin: 10px;
 }
 
 #answerBox {
-    color: darkgray;
-    /* border-top: 2px solid darkgray; */
+    color: rgb(67, 84, 184);
+    border-color: rgb(67, 84, 184);
+    margin-top: 10px;
     padding: 3px;
     text-align: left;
+}
+
+#initialsSubmit:hover {
+    background-color: rgb(80, 99, 211);
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(80, 99, 211);
+    cursor: pointer;
+}
+
+#high-scores:hover {
+    box-shadow: inset 0px 0px 15px rgb(255, 255, 255);
+    color: rgb(93, 112, 223);
 }

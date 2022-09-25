@@ -123,6 +123,10 @@ highScoreButton.addEventListener("click", function() {
 
 //Start button event
 startButton.addEventListener("click", function() {
+    timer.textContent = "Time: 60"
+    seconds = 59;
+    //Resets stopTimer
+    stopTimer = false;
     startTest();
 });
 
@@ -142,8 +146,6 @@ clearButton.addEventListener("click", function() {
 initialSubmitBox.addEventListener("click", storeInitials);
 function storeInitials(event) {
     event.preventDefault();
-
-    console.log("The submit button works");
     let initials = document.getElementById("initials").value;
         if (initials == "") {
             initials = "AA";
@@ -162,16 +164,18 @@ var displayHighscores = function() {
     localStorage.setItem("high-scores", JSON.stringify(highScores));
     questionList.setAttribute("style", "display: inline");
 
-    questionHeader.textContent = "Highscores";
+    questionHeader.textContent = "Latest Highscores";
     questionHeader.setAttribute("style", "text-align: left");
 
     //Button Labeling
-    startButton.textContent = "";
-    goBackButton.textContent = "Go Back";
-    clearButton.textContent = "Clear Highscores"
+    startButton.setAttribute("style", "display: none")
+    goBackButton.setAttribute("style", "display: inline")
+    clearButton.setAttribute("style", "display: inline")
 
     quizDesc.setAttribute("style", "display: none");
 
+    //Stops the timer if clicked mid test
+    stopTimer = true;
     //In case the user decides to be a comedian, this deletes all the questions
     while (questionList.firstChild) {
         questionList.removeChild(questionList.firstChild);
@@ -182,7 +186,7 @@ var displayHighscores = function() {
     for (let i = 0; i < highScores.length / 2;) {
         i++;
         let score = document.createElement("li");
-        score.textContent = i + ". " + highScores[x] + " ";
+        score.textContent = highScores[x] + " ";
         x++;
         score.textContent += highScores[x];
         x++;
@@ -191,16 +195,23 @@ var displayHighscores = function() {
 };
 
 //Function that displays the start page
+startButton.setAttribute("style", "display: inline")
+goBackButton.setAttribute("style", "display: none")
+clearButton.setAttribute("style", "display: none")
 var displayStart = function() {
     questionHeader.textContent = "Coding Quiz Challenge";
     quizDesc.textContent = "Quiz description";
 
     //Button Labeling
-    startButton.textContent = "Start!";
-    
-    goBackButton.textContent = "";
 
-    clearButton.textContent = "";
+    //REPLACE WITH DISPLAY TOGGLE
+    // startButton.textContent = "Start!";
+    // goBackButton.textContent = "";
+    // clearButton.textContent = "";
+    startButton.setAttribute("style", "display: inline")
+    goBackButton.setAttribute("style", "display: none")
+    clearButton.setAttribute("style", "display: none")
+    /////
 
     questionHeader.setAttribute("style", "text-align: center");
     quizDesc.setAttribute("style", "display: inline-block");
@@ -237,24 +248,22 @@ var startTest = function() {
     questionList.appendChild(option4);
 
     //Hides the buttons
-    startButton.textContent = "";
-    
-    goBackButton.textContent = "";
-
-    clearButton.textContent = "";
+    startButton.setAttribute("style", "display: none")
+    goBackButton.setAttribute("style", "display: none")
+    clearButton.setAttribute("style", "display: none")
 
     //Starts a timer that runs and when its done it displays highscore with a unique message
     var timerCounter = setInterval(function() {
-        timer.textContent = "Time: " + seconds;
+        timerUpdate(seconds);
         if (stopTimer) {
             clearInterval(timerCounter)
         } else if (seconds <= 0) {
             seconds = 0;
             clearInterval(timerCounter);
-            hsEntry2();
+            hsEntry2(seconds);
             questionHeader.textContent = "Time's Up!"
         } else {
-        seconds--;
+        //seconds--;
         }
     }, 1000);
 
@@ -281,7 +290,7 @@ var nextQuesiton = function() {
         var pause = setInterval(function() {
             if (tick == 1) {
                 clearInterval(pause);
-                hsEntry2();
+                hsEntry2(seconds);
             }
         tick++;
         }, 700);
@@ -289,18 +298,20 @@ var nextQuesiton = function() {
 };
 
 function wrong() {
-    testResult.setAttribute("style", "border-top: 2px solid darkgray")
+    testResult.setAttribute("style", "border-top: 2px solid ")
     testResult.textContent = "Wrong!";
 
-    //This looks goofy but doesn't work if its just seconds - 5;
     seconds = seconds - 5;
+    timerUpdate(seconds);
+
+    clearInterval(clear);
 
     timer.setAttribute("style", "color: red")
     let tick = 1;
     var clear = setInterval(function() {
         if (tick == 0) {
             testResult.textContent = "";
-            testResult.setAttribute("style", "border-top: 0px solid darkgray")
+            testResult.setAttribute("style", "border-top: 0px solid ")
             timer.setAttribute("style", "color: black")
             clearInterval(clear);
         }
@@ -309,25 +320,28 @@ function wrong() {
 };
 
 function right() {
-    testResult.setAttribute("style", "border-top: 2px solid darkgray")
+    testResult.setAttribute("style", "border-top: 2px solid ")
     testResult.textContent = "Correct!";
+
+    clearInterval(clear);
 
     let tick = 1;
     var clear = setInterval(function() {
         if (tick == 0) {
             testResult.textContent = "";
-            testResult.setAttribute("style", "border-top: 0px solid darkgray")
+            testResult.setAttribute("style", "border-top: 0px solid ")
             clearInterval(clear);
         }
         tick--;
     }, 700);
 };
 
-var hsEntry2 = function() {
+var hsEntry2 = function(score) {
     questionHeader.textContent = "All Done!"
 
     quizDesc.setAttribute("style", "display: inline-block");
-     quizDesc.textContent = "Your final score is " + seconds;
+    score++;
+    quizDesc.textContent = "Your final score is " + score;
         
     //Wipes OL and removes all LI
      while (questionList.firstChild) {
@@ -337,7 +351,10 @@ var hsEntry2 = function() {
     initialsBox.setAttribute("style", "display: inline-block");
 }
 
-
+var timerUpdate = function(second) {
+    timer.textContent = "Time: " + second;
+    seconds--;
+}
 
 
 
