@@ -26,48 +26,48 @@ var stopTimer = false;
 var seconds = 59;
 
 var q1 = {
-    header: "placeholder1 1",
-    b1: "1. ph1 1",
-    b2: "2. ph2 1",
-    b3: "3. ph3 1",
-    b4: "4. ph4 1",
-    correct: "1. ph1 1"
+    header: "What coding language can be used to add interactivity to a web page, and change the content you see?",
+    b1: "CSS",
+    b2: "Javascript",
+    b3: "Python",
+    b4: "Bootstrap",
+    correct: "Javascript"
 };
 
 var q2 = {
-    header: "placeholder2 2",
-    b1: "1. ph1 2",
-    b2: "2. ph2 2",
-    b3: "3. ph3 2",
-    b4: "4. ph4 2",
-    correct: "2. ph2 2"
+    header: "Which Javascript command can be used to change an element's CSS styling?",
+    b1: "element.textContent()",
+    b2: "document.querySelector()",
+    b3: "#element {}",
+    b4: "element.setAttribute()",
+    correct: "element.setAttribute()"
 };
 
 var q3 = {
-    header: "placeholder3 3",
-    b1: "ph1",
-    b2: "ph2",
-    b3: "ph3",
-    b4: "ph4",
-    correct: "ph3"
+    header: "How do you stop a timer?",
+    b1: "clearInterval(timer)",
+    b2: "timerStop(timer)",
+    b3: "timer = false;",
+    b4: "timer.pause()",
+    correct: "clearInterval(timer)"
 };
 
 var q4 = {
-    header: "placeholder4",
-    b1: "ph1",
-    b2: "ph2",
-    b3: "ph3",
-    b4: "ph4",
-    correct: "ph4"
+    header: "Why do you need to JSON.parse a stored object?",
+    b1: "The object is encrypted when put in local memory.",
+    b2: "It is stored in the HTML doc, and needs to be retrieved.",
+    b3: "Javascript stores the object as a string in local memory.",
+    b4: "The object is converted into machine code and needs to be decoded.",
+    correct: "Javascript stores the object as a string in local memory."
 };
 
 var q5 = {
-    header: "placeholder5",
-    b1: "ph1",
-    b2: "ph2",
-    b3: "ph3",
-    b4: "ph4",
-    correct: "ph1"
+    header: "Which of these is NOT a valid concatenation method?",
+    b1: "array1.concat(array2)",
+    b2: "bigString += string2",
+    b3: "array1 + array2",
+    b4: "string1 + string2",
+    correct: "array1 + array2"
 };
 
 var allQuestions = [q1, q2, q3, q4, q5];
@@ -200,18 +200,11 @@ goBackButton.setAttribute("style", "display: none")
 clearButton.setAttribute("style", "display: none")
 var displayStart = function() {
     questionHeader.textContent = "Coding Quiz Challenge";
-    quizDesc.textContent = "Quiz description";
+    quizDesc.textContent = "Welcome! In this quiz you'll be answering five quick coding questions. You'll have 60 seconds to answer them all, you'll get a five second time penalty for each question you get wrong, make sure to answer all the questions in time! \n You'll get a score based on how much time you have left by the end. Good luck!";
 
-    //Button Labeling
-
-    //REPLACE WITH DISPLAY TOGGLE
-    // startButton.textContent = "Start!";
-    // goBackButton.textContent = "";
-    // clearButton.textContent = "";
     startButton.setAttribute("style", "display: inline")
     goBackButton.setAttribute("style", "display: none")
     clearButton.setAttribute("style", "display: none")
-    /////
 
     questionHeader.setAttribute("style", "text-align: center");
     quizDesc.setAttribute("style", "display: inline-block");
@@ -225,11 +218,8 @@ var displayStart = function() {
 
 //Function that starts the test
 var startTest = function() {
-    //Reset question num
     questionNum = 0;
-    //Reformats all relevant text
     questionList.setAttribute("style", "display: inline");
-    //highScoreButton.setAttribute("style", "display: none");
     questionHeader.textContent = allQuestions[questionNum].header;
     questionHeader.setAttribute("style", "text-align: left");
     quizDesc.textContent = "";
@@ -262,15 +252,13 @@ var startTest = function() {
             clearInterval(timerCounter);
             hsEntry2(seconds);
             questionHeader.textContent = "Time's Up!"
-        } else {
-        //seconds--;
-        }
+        };
     }, 1000);
 
 
 };
 
-//Fills the questions based on which question
+//Populates the question list with new content
 var nextQuesiton = function() {
     questionNum++;
     if (questionNum < allQuestions.length) {
@@ -297,10 +285,12 @@ var nextQuesiton = function() {
     };
 };
 
+//Displays Wrong, deducts time, and plays a sound
+var soundWrong = document.getElementById("sound-wrong");
 function wrong() {
     testResult.setAttribute("style", "border-top: 2px solid ")
     testResult.textContent = "Wrong!";
-
+    soundWrong.play();
     seconds = seconds - 5;
     timerUpdate(seconds);
 
@@ -319,10 +309,12 @@ function wrong() {
     }, 700);
 };
 
+//Displays Correct and plays a sound.
+var soundRight = document.getElementById("sound-right");
 function right() {
     testResult.setAttribute("style", "border-top: 2px solid ")
     testResult.textContent = "Correct!";
-
+    soundRight.play();
     clearInterval(clear);
 
     let tick = 1;
@@ -335,7 +327,7 @@ function right() {
         tick--;
     }, 700);
 };
-
+//Redistributes text for the highscore entry page.
 var hsEntry2 = function(score) {
     questionHeader.textContent = "All Done!"
 
@@ -350,7 +342,8 @@ var hsEntry2 = function(score) {
 
     initialsBox.setAttribute("style", "display: inline-block");
 }
-
+//Semi-unecesary command that deals with updating the timer.
+//Made a unique function to cut down on time spent tinkering with its functionality.
 var timerUpdate = function(second) {
     timer.textContent = "Time: " + second;
     seconds--;
