@@ -17,7 +17,7 @@ Finally, after all this work, implementing the timer was fairly easy as I alread
 ## Installation
 
 N/A Already deployed on GitHub pages. 
-[(url)](https://tannerkothlow.github.io/code-quiz/)
+https://tannerkothlow.github.io/code-quiz/
 
 ## Usage
 In order to start the test, click the 'Start!" button. This will display the questions and activate a timer.
