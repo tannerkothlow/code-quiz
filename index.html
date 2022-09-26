@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
 </head>
 <body>
+    
+    <audio id="sound-wrong">
+        <source src="./assets/sounds/mm_wrong.wav" type="audio/wav">
+    </audio>
+    <audio id="sound-right">
+        <source src="./assets/sounds/mm_correct.wav" type="audio/wav">
+    </audio>
 
     <header>
     <p id="high-scores">View Highscores</p>
@@ -20,7 +27,11 @@
         <article id="question-holder">
 
         <h1 id="question-header">Coding Quiz Challenge</h1>
-        <p id="quiz-desc">Quiz description</p>
+        <p id="quiz-desc">
+            Welcome! In this quiz you'll be answering five quick coding questions. You'll have 60 seconds to answer them all,
+            you'll get a five second time penalty for each question you get wrong, make sure to answer all the questions in time!
+            <br>You'll get a score based on how much time you have left by the end. Good luck!
+        </p>
         <ol id="questions"></ol>
         <div id="button-container">
             <button id="start-button">Start!</button>
